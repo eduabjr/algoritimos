@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+int main() {
+    int i, t;
+
+    printf("tamanho vetor:");
+    scanf("%d", &t);
+
+    int v[t];
+
+    for (i =0; i <t ; i++) {
+        printf("Digite");
+        scanf("%d", &v[i]);
+    }
+
+    for (i = 0; i < t; i++) {
+        printf("%d ", v[i]);
+    }
+
+    return 0;
+}
