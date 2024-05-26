@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int main() {
+    int v[3],f[3];
+    int i, j, max = 0, MaisF;
+
+    printf("Digite os elementos do vetor:\n");
+    for (i = 0; i < 3; i++) {
+        printf("DIGIETE");
+        scanf("%d", &v[i]);
+    }
+
+    // Conta a frequência de cada elemento
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            if (v[i] == v[j]) {
+                f[i]++;
+            }
+        }
+    }
+
+    // Encontra o elemento mais frequente
+    for (i = 0; i < 3; i++) {
+        if (f[i] > max) {
+            max= f[i];
+            MaisF = v[i];
+        }
+    }
+
+    printf("O elemento mais frequente é: %d\n", MaisF);
+
+    return 0;
+}
