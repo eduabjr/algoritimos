@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int main() {
+    int i, j, t, v[15];
+
+    // Solicita os valores do vetor
+    for (i = 0; i < 15; i++) {
+        printf("digite nº");
+        scanf("%d", &v[i]);
+    }
+
+    for (i = 0; i < 15; i++) {
+        for (j = 0; j < 15; j++) {
+            if (v[j] > v[j + 1]) {
+                // Troca os elementos
+                t = v[j];
+                v[j] = v[j + 1];
+                v [j + 1] = t;
+            }
+        }
+    }
+
+    for (i = 0; i < 15; i++) {
+        printf("%d ", v[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
