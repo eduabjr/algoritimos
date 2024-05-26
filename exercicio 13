@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    int i, v[] = {1,2,3,4,5};
+    
+ for (i = 4; i >=0; i--) {
+    printf("%d", &v[i]);
+}
+    return 0;
+}
