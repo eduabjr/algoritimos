@@ -1,0 +1,28 @@
+ #include <stdio.h>
+
+int main (){
+
+int i, maior, menor, v[15];
+
+for (i=0; i<15; i++){
+printf("digite");
+scanf("%d", &v[i]);
+}    
+    
+maior= v[0];
+menor= v[0];
+
+for (i=0; i<15; i++){
+if (v[i]>maior)
+maior=v[i];
+}
+
+for (i=0; i<15; i++){
+if (v[i]<menor)
+menor=v[i];
+}
+
+printf("maior=%d - menor=%d", maior, menor);
+
+return 0;
+}
