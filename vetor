@@ -10,7 +10,6 @@ int main() {
         scanf("%d", &v[i]);
     }
 
-    // Conta a frequência de cada elemento
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
             if (v[i] == v[j]) {
@@ -19,7 +18,6 @@ int main() {
         }
     }
 
-    // Encontra o elemento mais frequente
     for (i = 0; i < 3; i++) {
         if (f[i] > max) {
             max= f[i];
