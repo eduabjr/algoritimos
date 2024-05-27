@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+    int soma;
+
+for(int a=0; a<100; a++){
+printf("%d ", a);
+
+    
+soma = soma+a;   
+
+
+}
+
+printf("soma:%d", soma);
+    return 0;
+}
