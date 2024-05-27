@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+    int i;
+    float a,soma,media;
+    
+for(i=0; i<10; i++){
+printf("digite %d: ", i+1);
+scanf("%f", &a);
+
+soma=soma+a;
+
+}
+media=soma/10;
+printf("media é:%f", media);
+    return 0;
+}
