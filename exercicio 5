@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main() {
+    int i, par=0, impar=0, v[10];
+
+    for (i = 0; i < 10; i++) {
+        printf("digite: ");
+        scanf("%d", &v[i]);
+        
+        if(v[i]%2==0){
+            par++;
+        }
+        
+        else
+        impar++;
+    }
+
+printf("nº de par é %d", par);
+printf("nº de impar é %d", impar);
+
+    return 0;
+}
