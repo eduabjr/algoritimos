@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+int main() {
+    int a=1, soma;
+
+while(a<100){
+printf("%d ", a);
+
+soma=soma+a;
+a++;
+}
+
+printf("soma:%d\n", soma);
+
+    return 0;
+}
