@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main(){
+    
+   int i,j, x, matriz[6][6];
+   
+   for(i=0; i<2; i++){
+        for(j=0; j<2; j++){
+            printf("digite");
+            scanf("%d", &matriz[i][j]);
+             
+             if (matriz[i][j] < 0){
+                 x++;
+                 
+             }
+             
+
+        }
+   }
+
+
+    printf("quantidade é %d", x);
+       
+    return 0;
+}
