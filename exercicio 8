@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main(){
+    
+   int i,j, soma, matriz[3][3];
+   
+   for(i=0; i<3; i++){
+        for(j=0; j<3; j++){
+             printf("digite");
+                scanf("%d", &matriz[i][j]);
+        }
+   }
+   
+   
+    printf("nº da linha");
+    scanf("%d", &i);
+   
+    if(i>0 && i<3){
+        for(j=0; j<3; j++){
+        soma = soma+ matriz[i][j];
+        }
+            printf("a linha é %d - soma é %d", i, soma);
+   }
+        
+       
+    return 0;
+}
