@@ -1,5 +1,8 @@
 Lista de exercicios em C
 
+LISTA 1 - Variáveis e expressões
+link: https://github.com/eduabjr/algoritimos/tree/lista-1-variaveis-e-express%C3%B5es
+
 LISTA 2 FOR - WHILE
 link: https://github.com/eduabjr/algoritimos/tree/lista-2-for-while
 
