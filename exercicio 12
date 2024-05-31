@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main(){
+    
+   int i,j, soma, matriz[3][3];
+   
+   for(i=0; i<3; i++){
+        for(j=0; j<3; j++){
+             printf("digite");
+                scanf("%d", &matriz[i][j]);
+        }
+   }
+   
+   
+    printf("nº da coluna");
+    scanf("%d", &j);
+   
+    if(j>0 && j<3){
+        for(i=0; i<3; i++){
+        soma = soma+ matriz[i][j];
+        }
+            printf("a coluna é %d - soma é %d", j, soma);
+   }
+        
+       
+    return 0;
+}
