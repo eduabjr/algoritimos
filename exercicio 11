@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main(){
+    
+   int i,j, x, matriz[3][3];
+   
+   for(i=0; i<3; i++){
+        for(j=0; j<3; j++){
+            printf("digite");
+            scanf("%d", &matriz[i][j]);
+             
+            if(matriz[i][j] == 0){
+                x++;
+                
+            }
+             
+
+        }
+   }
+
+
+    printf("nº de zeros é %d", x);
+       
+    return 0;
+}
