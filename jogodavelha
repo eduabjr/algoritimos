@@ -1,0 +1,248 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                              BIBLIOTECAS USADAS
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#include <stdio.h> // biblioteca padrão (com função de entrada e saida)
+# include <stdlib.h> // biblioteca com função de alocação de memoria (vamos precisar guardra informação da jogada)
+# include <locale.h> // blibloteca com função de localizar o idioma
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                          INFORMAÇÕES GERAIS
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// o jogo da velha será feito em formato de matriz 3x3;
+// Ambos os jogadores que participam, alternam entre "X" e "0" para jogar; 
+// o jogador tera que informar a linha(L) e coluna(C) para fazer a jogada como no exemplo:
+//            
+//             coluna(C)          JOGADAS POSSÍVEIS:
+//              0   1   2          L,C    L,C    L,C   
+//           0___|___|___        (0,0), (0,1), (0,2)
+// linha(L)  1___|___|___        (1,0), (1,1), (1,2) 
+//           2   |   |           (2,0), (2,1), (2,2)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//                                      COMO GANHAR?
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                  *JOGANDO NA LINHAS*                                     
+//               coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2      L,C       
+//            0 _X_|_X_|_X__  (0,0), (0,1), (0,2) 
+// linha(L)   1 ___|___|___      
+//            2    |   |        
+
+//              coluna(C)          JOGADAS POSSÍVEIS::
+//               0   1   2      L,C       
+//            0  ___|___|___  
+// linha(L)   1 __X_|_X_|_X_  (1,0), (1,1), (1,2)     
+//            2     |   |        
+
+//               coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2      L,C       
+//            0 ___|___|___  
+// linha(L)   1 ___|___|___    
+//            2  X | X | X      (2,0), (2,1), (2,2)
+///////////////////////////////////////////////////////////////////////////////////////////////
+//                              *JOGANDO NA c*        
+
+//              coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2          L,C    L,C    L,C   
+//            0 _X__|___|___        (0,0), (1,0), (2,0)
+// linha(L)   1 _X__|___|___        
+//            2  X  |   |           
+
+//             coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2          L,C    L,C    L,C   
+//            0 ___|_X__|___        (0,1), (1,1), (2,1) 
+// linha(L)   1 ___|_X__|___        
+//            2    | X  |       
+
+//              coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2          L,C    L,C    L,C   
+//            0 ___|___|_X__        (0,2), (1,2), (2,2) 
+// linha(L)   1 ___|___|_X__        
+//            2    |   | X   
+///////////////////////////////////////////////////////////////////////////////////////////////
+//                                  *JOGANDO NA DIAGONAL*
+
+//              coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2          L,C    L,C    L,C   
+//            0 _X_|____|___        (0,0), (1,1), (2,2)
+// linha(L)   1 ___|_X__|___        
+//            2    |    | X   
+
+//              coluna(C)          JOGADAS POSSÍVEIS:
+//               0   1   2          L,C    L,C    L,C   
+//            0 ___|___|__X_        (0,2), (1,1), (2,0)
+// linha(L)   1 ___|_X_|___        
+//            2  X |   |    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                         EM CASO DE EMPATE
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//     SE NENHUM JOGADOR REALIZAR NENHUMA DAS AÇÕES ACIMA UMA MENSAGEM DIZENDO EMPATE APARECERÁ
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                               FUNÇÃO GLOBAL
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// tabu = é uma função fora do bloco principal que pode ser acessada a qualquer momento pela função principal;
+//essa função fica fora do main que é a função principal;
+
+// Função para exibir o tabuleiro
+void Tabu(char velha[3][3]) {
+    printf("\n"); // pula linha
+    printf("\tcolunas\n\t 0  1  2\n"); // exibe os números acima do tabuleiro nas colunas
+    for (int i = 0; i < 3; i++) {
+        printf("linha %d", i); // exibe os números ao lado do tabuleiro nas linhas
+        for (int j = 0; j < 3; j++) {
+            printf(" %c ", velha[i][j]);
+            if (j < 2) {
+                printf("|"); // Adiciona uma barra vertical entre as células 0 e 1 da matriz
+            }
+        }
+        printf("\n"); // pula linha
+        if (i < 2) {
+            printf("\t---------\n"); // Adiciona uma linha horizontal entre as células 0 e 1 da matriz
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      CODIGOS DE VALIÇÃO
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Função para validar entrada de X e O
+int valido(char letra) {
+    if (letra == 'X' || letra == 'O') {
+        return 1; // retorna um valor inteiro de uma função
+    } else {
+        return 0; // indica o fim de uma função
+    }
+}
+
+// Função para validar coordenadas
+int coordenadaValida(int x, int y) {
+    if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+        return 1; // retorna um valor inteiro de uma função
+    } else {
+        return 0; // indica o fim de uma função
+    }
+}
+
+// Função para verificar se a posição está vazia
+int posicaoVazia(char velha[3][3], int x, int y) {
+    if (velha[x][y] == ' ') {
+        return 1; // retorna um valor inteiro de uma função
+    } else {
+        return 0; // indica o fim de uma função
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                            CONDIÇÃO DE VITORIA
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Função para verificar se alguém ganhou
+int vitoria(char velha[3][3]) {
+    char x = 'X';
+    char o = 'O';
+
+    // CONDIÇÃO NAS LINHAS
+
+    if(velha[0][0]==x && velha[0][1]==x && velha[0][2]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[0][0]==o && velha[0][1]==o && velha[0][2]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+    if(velha[1][0]==x && velha[1][1]==x && velha[1][2]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[1][0]==o && velha[1][1]==o && velha[1][2]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+    if(velha[2][0]==x && velha[2][1]==x && velha[2][2]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[2][0]==o && velha[2][1]==o && velha[2][2]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+
+    // CONDIÇÃO NAS COLUNAS
+    if(velha[0][0]==x && velha[1][0]==x && velha[2][0]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[0][0]==o && velha[1][0]==o && velha[2][0]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+    if(velha[0][1]==x && velha[1][1]==x && velha[2][1]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[0][1]==o && velha[1][1]==o && velha[2][1]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+    if(velha[0][2]==x && velha[1][2]==x && velha[2][2]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[0][2]==o && velha[1][2]==o && velha[2][2]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+
+     // CONDIÇÃO NAS DIAGONAIS
+    if(velha[0][0]==x && velha[1][1]==x && velha[2][2]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[0][0]==o && velha[1][1]==o && velha[2][2]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+    if(velha[0][2]==x && velha[1][1]==x && velha[2][0]==x)
+        return 1; //jogador 1(retorna um valor para a função)
+    if(velha[0][2]==o && velha[1][1]==o && velha[2][0]==o)
+        return -1; //jogador 2 (retorna um valor para a função)
+    return 0; // indica o fim de uma função
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                           FUNÇÃO PRINCIPAL
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int main() {
+    setlocale(LC_ALL, "Portuguese"); // coloca o idioma em do código em portuges
+
+    char velha[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}}; // representa o tabuleiro sem preenchimento
+    char jogador1[50], jogador2[50]; // 50 e quantidade de caracter no nome do jogador. 
+    int l, c, vez, jogadas;
+  
+    printf("Digite o nome do Jogador 1: ");
+    scanf("%s", jogador1); // é usado %s por ter mais de 1 caracter, caso houvesse apenas um seria usado %c;
+    printf("Digite o nome do Jogador 2: ");
+    scanf("%s", jogador2); // é usado %s por ter mais de 1 caracter, caso houvesse apenas um seria usado %c;
+
+    for (;;) { // O ;; significa que o for e infinito
+        Tabu(velha);
+        if (vez == 0) {
+            printf("\n%s (jogador usando X), digite linha e coluna pra jogar: ", jogador1); // digita o nome do jogador
+        } else {
+            printf("\n%s (jogador usando 0), digite linha e coluna pra jogar: ", jogador2); // digita o nome do jogador
+        }
+        scanf("%d %d", &l, &c);
+
+
+        if (coordenadaValida(l, c) && posicaoVazia(velha, l, c)) {
+            if (vez == 0) {
+                velha[l][c] = 'X'; // como temos no sistema booleano apenas 0 e 1 trocamos o caracter 'X' por 1
+                vez = 1;
+            } else {
+                velha[l][c] = 'O'; // como temos no sistema booleano apenas 0 e 1 trocamos o caracter '0' por 0
+                vez = 0;
+            }
+            jogadas++; // incrementa as jogadas até o máximo que é 9 o total da matriz 3x3
+
+            int resultado = vitoria(velha); //  chamamos a função feita acima
+            if (resultado == 1) {// se retornar "1" jogador 1 ganha
+                Tabu(velha);
+                printf("\n %s venceu\n", jogador1);
+                break; // para até o jogador apertar algum botão;
+            } else if (resultado == -1) { // se retornar "-1" jogador 2 ganha
+                Tabu(velha);
+                printf("\n %s venceu\n", jogador2);
+                break; // para até o jogador apertar algum botão;
+            } else if (jogadas == 9) { // se em até 9 jogadas ninguém ganhou é empate
+                Tabu(velha);
+                printf("\n empate\n");
+                break; // para até o jogador apertar algum botão;
+            }
+        } else {
+            printf("\njogada invalida!\n"); // se apertar algo fora dos números estipulados que vão de 0 a 2 da inválido e para o jogo
+        }
+    }
+
+    return 0; // indica o fim de uma função
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                              MATERIAL USADO PARA FAZER
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// para exibição do tabuleiro eu assisti este tutorial = https://www.youtube.com/watch?v=Ojy9v0dVNwQ&t=358s
+// para os codigos de validação assisti este tutorial = https://www.youtube.com/watch?v=VJRQYE7DuZ8&list=PLqJK4Oyr5WSgZ6MOZFg89Q2SqsS93FNQA&index=3
+// para os códigos de condição de vitoria assisti este tutorial = https://www.youtube.com/watch?v=_t5SjZ_4riA&t=178s
